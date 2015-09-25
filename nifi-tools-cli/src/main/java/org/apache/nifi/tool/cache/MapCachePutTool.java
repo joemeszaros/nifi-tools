@@ -54,6 +54,9 @@ public class MapCachePutTool implements Tool {
                         .withRequiredArg()
                         .ofType(Integer.class);
 
+        OptionSpec keep_original =
+                optionParser.accepts("keep-original", "If the cache entry already exists, do not replace the original value");
+
         OptionSet optionSet = optionParser.parse(args.toArray(new String[0]));
 
         List<String> nargs = (List<String>)optionSet.nonOptionArguments();
@@ -69,9 +72,14 @@ public class MapCachePutTool implements Tool {
         String cacheValue = nargs.get(1);
 
         DistributedMapCacheClientService client = MapCacheClient.createClient(hostName.value(optionSet), port.value(optionSet).toString(), "360 secs");
-
-        client.put(cacheKey, cacheValue, new MapCacheClient.StringSerializer(), new MapCacheClient.StringSerializer());
-        out.println("success");
+        if (optionSet.has(keep_original)) {
+            boolean existed = client.putIfAbsent(cacheKey, cacheValue, new MapCacheClient.StringSerializer(), new MapCacheClient.StringSerializer());
+            if (existed) {
+                return 1;
+            }
+        } else {
+            client.put(cacheKey, cacheValue, new MapCacheClient.StringSerializer(), new MapCacheClient.StringSerializer());
+        }
         return 0;
     }
 
