@@ -18,6 +18,7 @@
 package org.apache.nifi.tool;
 
 import org.apache.nifi.tool.cache.MapCacheGetTool;
+import org.apache.nifi.tool.cache.MapCachePutTool;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class NifiCli {
         tools = new TreeMap<String, Tool>();
         for (Tool tool : new Tool[] {
                 new MapCacheGetTool(),
+                new MapCachePutTool()
 
         }) {
             Tool prev = tools.put(tool.getName(), tool);
