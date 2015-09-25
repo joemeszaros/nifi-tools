@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.apache.nifi:nifi-mock:0.3.0'
+    compile 'org.apache.nifi:nifi-ssl-context-service-api:0.3.0'
+    compile 'org.apache.nifi:nifi-api:0.3.0'
+    compile 'org.apache.nifi:nifi-distributed-cache-client-service:0.3.0'
+    compile 'org.apache.nifi:nifi-utils:0.3.0'
+    compile 'org.apache.nifi:nifi-distributed-cache-client-service-api:0.3.0'
+
+    compile 'net.sf.jopt-simple:jopt-simple:4.9'
+
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'ch.qos.logback:logback-classic:1.+'
+
+    testCompile 'junit:junit:4.12'
+}
