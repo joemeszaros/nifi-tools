@@ -1,5 +1,6 @@
 *.class
-
+nifi-tools-cli/build/*
+nifi-tools-cli/.gradle/*
 *.iml
 # Package Files #
 *.jar
