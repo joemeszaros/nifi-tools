@@ -17,14 +17,13 @@
  */
 package org.apache.nifi.tool;
 
+import org.apache.nifi.tool.cache.MapCacheContainsTool;
 import org.apache.nifi.tool.cache.MapCacheGetTool;
 import org.apache.nifi.tool.cache.MapCachePutTool;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
-
-import java.io.InputStream;
 
 /** Command-line driver.*/
 public class NifiCli {
@@ -39,7 +38,8 @@ public class NifiCli {
         tools = new TreeMap<String, Tool>();
         for (Tool tool : new Tool[] {
                 new MapCacheGetTool(),
-                new MapCachePutTool()
+                new MapCachePutTool(),
+                new MapCacheContainsTool()
 
         }) {
             Tool prev = tools.put(tool.getName(), tool);

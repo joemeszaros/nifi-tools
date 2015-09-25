@@ -17,27 +17,27 @@
  */
 package org.apache.nifi.tool.cache;
 
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.List;
-
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import org.apache.nifi.distributed.cache.client.DistributedMapCacheClientService;
 import org.apache.nifi.tool.Tool;
 
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.List;
 
-public class MapCacheGetTool implements Tool {
+
+public class MapCacheContainsTool implements Tool {
 
     @Override
     public String getName() {
-        return "map-cache-get";
+        return "map-cache-contains";
     }
 
     @Override
     public String getShortDescription() {
-        return "Returns the value in the cache for the given key, if one exists, otherwise returns a warning message.";
+        return "Determines if the given value is present in the cache and if so returns true, else returns false";
     }
 
     @Override
@@ -54,6 +54,7 @@ public class MapCacheGetTool implements Tool {
                         .withRequiredArg()
                         .ofType(Integer.class);
 
+
         OptionSet optionSet = optionParser.parse(args.toArray(new String[0]));
 
         List<String> nargs = (List<String>)optionSet.nonOptionArguments();
@@ -69,20 +70,17 @@ public class MapCacheGetTool implements Tool {
 
         DistributedMapCacheClientService client = MapCacheClient.createClient(hostName.value(optionSet), port.value(optionSet).toString(), "360 secs");
 
-        String cacheValue = client.get(cacheKey, new MapCacheClient.StringSerializer(), new MapCacheClient.StringDeserializer());
-
-        if (cacheValue == null || cacheValue.isEmpty()) {
-            out.println("Not found in cache.");
-            return 1;
+        if (client.containsKey(cacheKey, new MapCacheClient.StringSerializer())) {
+            out.println("true");
+            return 0;
         } else {
-            out.println(cacheValue);
+            out.println("false");
+            return 1;
         }
-
-        return 0;
     }
 
     private void printHelp(PrintStream ps) {
-        ps.println("map-cache-get --hostname hostname --port port cache-key");
+        ps.println("map-cache-contains --hostname hostname --port port cache-key");
         ps.println();
         ps.println(getShortDescription());
     }

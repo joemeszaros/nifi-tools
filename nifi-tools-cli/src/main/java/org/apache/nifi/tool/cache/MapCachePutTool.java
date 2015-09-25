@@ -84,7 +84,7 @@ public class MapCachePutTool implements Tool {
     }
 
     private void printHelp(PrintStream ps) {
-        ps.println("map-cache-put --hostname hostname --port port cache-key cache-value");
+        ps.println("map-cache-put --hostname hostname --port port --keep-original cache-key cache-value");
         ps.println();
         ps.println(getShortDescription());
     }
